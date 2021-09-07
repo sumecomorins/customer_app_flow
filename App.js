@@ -4,64 +4,29 @@ import { View, Text, Button } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { HomeStackScreen, LoginStackScreen, LogoutStackScreen, TopupStackScreen } from './src/common/navigation/stack/RootStackScreen';
+import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MainTabScreen from './src/common/navigation/tab/MainTabScreen';
+import TopupCategoryScreen from './src/domain/topup/TopupCategoryScreen';
+import { DrawerContent } from './src/common/navigation/drawer/DrawerContent';
+import LoginScreen from './src/domain/login/LoginScreen';
+import LogoutScreen from './src/domain/logout/LogoutScreen';
+
+
+const Drawer = createDrawerNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
 const Stack = createStackNavigator();
 
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to Details screen"
-        onPress={() => navigation.navigate('Detail')}
-      />
-    </View>
-  );
-}
-
-function DetailScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Detail Screen</Text>
-      <Button
-        title="Go to profile screen"
-        onPress={() => navigation.navigate('Profile')}
-      />
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-}
-
-function ProfileScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Profile Screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Detail')}
-      />
-    </View>
-  );
-}
-
 export default function App() {
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Detail" component={DetailScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator> */}
-      <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Detail" component={DetailScreen} />
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-    </Tab.Navigator>
+    <Drawer.Navigator   drawerContent={props => <DrawerContent {...props} />} >
+         <Drawer.Screen  options={{headerShown:false}}  name='sss'  component={MainTabScreen} />
+    </Drawer.Navigator>
   </NavigationContainer>
     
   )
