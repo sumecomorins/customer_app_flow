@@ -11,33 +11,35 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { AuthContext } from '../../common/components/Context'
+import axios from 'axios';
+
 
 
 export default function TestLogin({navigation}) {
 
-    const Users = [
-        {
-            id: 1, 
-            email: 'user1@email.com',
-            username: 'user1', 
-            password: 'password', 
-            userToken: 'token123'
-        },
-        {
-            id: 2, 
-            email: 'user2@email.com',
-            username: 'user2', 
-            password: 'pass1234', 
-            userToken: 'token12345'
-        },
-        {
-            id: 3, 
-            email: 'testuser@email.com',
-            username: 'testuser', 
-            password: 'testpass', 
-            userToken: 'testtoken'
-        },
-    ];
+    // const Users = [
+    //     {
+    //         id: 1, 
+    //         email: 'user1@email.com',
+    //         username: 'user1', 
+    //         password: 'password', 
+    //         userToken: 'token123'
+    //     },
+    //     {
+    //         id: 2, 
+    //         email: 'user2@email.com',
+    //         username: 'user2', 
+    //         password: 'pass1234', 
+    //         userToken: 'token12345'
+    //     },
+    //     {
+    //         id: 3, 
+    //         email: 'testuser@email.com',
+    //         username: 'testuser', 
+    //         password: 'testpass', 
+    //         userToken: 'testtoken'
+    //     },
+    // ];
 
     const [data, setData] = React.useState({
         username: '',
@@ -50,9 +52,9 @@ export default function TestLogin({navigation}) {
 
     // const { colors } = useTheme();
 
-    const { signIn } = React.useContext(AuthContext);
-    // const Users = React.useContext(AuthContext);
-    // console.log(`Users`, Users)
+    // const { signIn } = React.useContext(AuthContext);
+    const User = React.useContext(AuthContext);
+    // console.log(`userDetail`, User)
 
     const textInputChange = (val) => {
         if (val.trim().length >= 4) {
@@ -111,41 +113,78 @@ export default function TestLogin({navigation}) {
 
     // const loginHandle = (userName, pass) => {
 
-    //     if (data.username.length == 0 || data.password.length == 0) {
+        // if (data.username.length == 0 || data.password.length == 0) {
+        //     Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
+        //         { text: 'Okay' }
+        //     ]);
+        //     return;
+        // }
+        // if (Users.name == userName && Users.password == pass){
+        //     // alert('sucess')
+        //     Users.setUserToken('fgh')
+        //     console.log(`UsersAut`, Users)
+        // }else{
+        //     alert('failed')
+        // }
+    // }
+
+
+ const loginHandle = async (userName, pass) => {
+    let loginData = {
+        phone: userName,
+        password: pass,
+      };
+      if (data.username.length == 0 || data.password.length == 0) {
+        Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
+            { text: 'Okay' }
+        ]);
+        return;
+    }
+  try {
+    const response = await axios.post('https://veltech.edu.in/admission_enquiry_2019/cms/edit_data.php?actionVal=login', loginData);
+    console.log(`response`, response.data)
+    if (response.status == '200') {
+      
+    //   signIn(response.data) 
+    User.setUserToken(response.data.token)
+    User.setUserDetail(response)
+
+      
+    } else {
+      return {
+        // error: 'Other Errors',
+        
+      };
+    }
+  } catch (error) {
+    if (error.response.status == '404') {
+      return {
+        // error: 'File Not Found',
+      };
+    }
+  }
+};
+    // const loginHandle = (userName, password) => {
+
+    //     const foundUser = Users.filter( item => {
+    //         return userName == item.username && password == item.password;
+    //     } );
+
+    //     if ( data.username.length == 0 || data.password.length == 0 ) {
     //         Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
-    //             { text: 'Okay' }
+    //             {text: 'Okay'}
     //         ]);
     //         return;
     //     }
-    //     if (Users.name == userName && Users.password == pass){
-    //         // alert('sucess')
-    //         Users.setUserToken('fgh')
-    //         console.log(`UsersAut`, Users)
-    //     }else{
-    //         alert('failed')
+
+    //     if ( foundUser.length == 0 ) {
+    //         Alert.alert('Invalid User!', 'Username or password is incorrect.', [
+    //             {text: 'Okay'}
+    //         ]);
+    //         return;
     //     }
+    //     signIn(foundUser);
     // }
-    const loginHandle = (userName, password) => {
-
-        const foundUser = Users.filter( item => {
-            return userName == item.username && password == item.password;
-        } );
-
-        if ( data.username.length == 0 || data.password.length == 0 ) {
-            Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
-                {text: 'Okay'}
-            ]);
-            return;
-        }
-
-        if ( foundUser.length == 0 ) {
-            Alert.alert('Invalid User!', 'Username or password is incorrect.', [
-                {text: 'Okay'}
-            ]);
-            return;
-        }
-        signIn(foundUser);
-    }
 
 
     return (

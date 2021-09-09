@@ -26,52 +26,15 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
-  // const [isLoading, setIsLoading] = useState(false)
-  // const [userToken, setUserToken] = useState(null)
-  // const [name, setName] = useState('demo');
-  // const [password, setPassword] = useState('demo');
-  // const user = {name, setName, password, setPassword,isLoading,setIsLoading,userToken,setUserToken};
+  const [userToken, setUserToken] = useState(null)
+  const [userDetail, setUserDetail] = useState([]);
+  console.log(`userDetailssss`, userDetail)
+  const user = {userDetail, setUserDetail,userToken,setUserToken};
 
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState(null);
-
-  const authContext = React.useMemo(() => ({
-    signIn: (foundUser) => {
-      console.log(`foundUser`,String(foundUser[0].userToken) )
-      setUserToken('fgkj');
-      setIsLoading(false);
-
-    },
-
-    signOut: () => {
-      setUserToken(null);
-      setIsLoading(false);
-
-    },
-    signUp: () => {
-      setUserToken('fgkj');
-      setIsLoading(false);
-    },
-
-  }));
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-  }, []);
-
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  
   return (
-    // <AuthContext.Provider value = {user}>
-    <AuthContext.Provider value={authContext}>
+    <AuthContext.Provider value = {user}>
+     {/* <AuthContext.Provider value={authContext}> */}
 
 
     <NavigationContainer>
